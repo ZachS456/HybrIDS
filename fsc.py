@@ -58,12 +58,12 @@ def fsCheck(directory, rate):
 					algo = hashlib.sha256()
 					algo.update(contents)
 					query[fileName] = algo.hexdigest()
-    
+
 		for key in digests:
 			if key not in query:
 				print 'WARNING: %s removed from file system!!' % (key)
 				flag = 1
-  
+
 		for key in query:
 			if key not in digests:
 				print 'WARNING: %s added to file system!!' % (key)
@@ -75,7 +75,7 @@ def fsCheck(directory, rate):
 					print 'WARNING: %s was changed!!' % (key)
 					flag = 1
 
-		print "Check complete!" 
+		print "Check complete!"
 		if flag:
 			break
 
