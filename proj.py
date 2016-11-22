@@ -9,7 +9,11 @@ from crontab import CronTab
 if sys.platform != 'linux2' and sys.platform != 'linux': 
 	print sys.platform  + " is not supported."
 	exit(0)
-	
+if os.geteuid() == 0:
+	direct = '/'
+else:
+	direct = os.path.expanduser('~')
+
 print 'Welcome to HybrIDS v0.1'
 
 if not os.path.isfile("saver.p"):
@@ -33,14 +37,15 @@ else:
 		reply = raw_input('\n')
 		while True:
 			if(reply == 'init'):
-				fsCheck('/home/Zach')
+				fsCheck(direct)
 				break
 			elif(reply == 'scannow'):
-				sysScan('/home/Zach')
+				print direct
+				sysScan(direct)
 				break
 			elif(reply == 'setscan'):
 				answer = raw_input('How often would you like to scan\n')
-				user_cron = CronTab()
+				user_cron = CronTab(user=True)
 				job = user_cron.new(command='echo sysScan | ' + path)
 				job.minute.every(int(answer))
 				if(job.is_valid):
