@@ -8,9 +8,9 @@ def cap():
 
 def processPacket(pkt):
    rules = pullRules()
-   pktInfo = processHeader(pkt, rules)
+   pktInfo = processHeader(pkt)
    pktInfo['content'] = str(pkt).encode("HEX")
-   #processData(pktInfo)
+   processData(pktInfo, rules)
 
 def processHeader(pkt):
    if IP in pkt:
@@ -38,8 +38,10 @@ def processHeader(pkt):
       #print 'Destination Port = ' + str(dPort)
       #print ' '
 
-def processData(pkt):
-   hexData = str(pkt).encode("HEX")
+def processData(pkt, rules):
+   idx = {}
+   for key in rules.keys():
+      if pkt[key] in rules[key]:
+         idx{key] = index(pkt[key])
 
-   regex = re.compile(hexText)
-   ret = regex.findall(hexData)
+   #gotta play with more stuff   
