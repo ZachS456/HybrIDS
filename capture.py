@@ -1,18 +1,28 @@
 #!/usr/bin/env python
 
-import sys
 from scapy.all import *
+from rules import *
 
 def cap():
-   sniff(iface = 'eth0', prn=processPacket, store=0)
+   rules = getRules('./rules.file')
+   sniff(iface = 'eth0', prn=customPrn(rules), store=0)
 
-def processPacket(pkt):
-   rules = pullRules()
-   pktInfo = processHeader(pkt, rules)
-   pktInfo['content'] = str(pkt).encode("HEX")
-   #processData(pktInfo)
+def customPrn(rules):
+   def processPacket(pkt):
+      pktInfo = processHeader(pkt)
+      pktInfo['content'] = str(pkt).encode("HEX")
+      pktInfo['msg'] = ''
+      processData(pktInfo, rules)
+   return processPacket
 
 def processHeader(pkt):
+   info = {}
+   proto = ''
+   ipSrc = 0
+   sPort = 0
+   ipDst = 0
+   dPort = 0
+
    if IP in pkt:
       ipSrc = pkt[IP].src
       ipDst = pkt[IP].dst
@@ -21,25 +31,39 @@ def processHeader(pkt):
       sPort = pkt[TCP].sport
       dPort = pkt[TCP].dport
    elif UDP in pkt:
-      proto = 'tcp'
+      proto = 'udp'
       sPort = pkt[UDP].sport
       dPort = pkt[UDP].dport
 
-   info['proto'] = proto
-   info['srcip'] = ipSrc
-   info['srcport'] = sPort
-   info['dstip'] = ipDst
-   info['dstport'] = dPort
+   info['proto'] = str(proto)
+   info['srcip'] = str(ipSrc)
+   info['srcport'] = str(sPort)
+   info['dstip'] = str(ipDst)
+   info['dstport'] = str(dPort)
 
    return info
-      #print 'IP src = ' + str(ipSrc)
-      #print 'IP dst = ' + str(ipDst)
-      #print 'Source port = ' + str(sPort)
-      #print 'Destination Port = ' + str(dPort)
-      #print ' '
 
-def processData(pkt):
-   hexData = str(pkt).encode("HEX")
+def processData(pkt, rules):
+   indices = []
+   idx = {}
+   for key in rules.keys():
+      idx[key] = getIdx(rules[key], pkt[key])
+      for num in idx[key]:
+         indices.append(num)
 
-   regex = re.compile(hexText)
-   ret = regex.findall(hexData)
+   ruleIdx = set(indices)
+   for i in ruleIdx:
+      hitCount = 0
+      for key in rules.keys():
+         if pkt[key] == rules[key][i] or rules[key][i] == '*':
+            hitCount = hitCount + 1
+         else:
+            if key != 'msg':
+               print pkt[key], rules[key][i]
+      #print 'Hit count is %d for rule %d\n' % (hitCount, i)
+      if hitCount == 6:
+         print rules['msg'][i]
+
+def getIdx(refList, qry):
+   idx = [i for i, x in enumerate(refList) if x == qry]
+   return idx

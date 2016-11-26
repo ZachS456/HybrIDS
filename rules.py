@@ -8,6 +8,7 @@ def getRules(fileName):
    fin = open(fileName, 'r')
    lines = fin.readlines()
    rulesD = checkRules(lines)
+   #print str(rulesD)
    return rulesD
 
 def checkRules(lines):
@@ -36,6 +37,6 @@ def checkRules(lines):
          rulesList['srcport'].append(tokens[2])
          rulesList['dstip'].append(tokens[3])
          rulesList['dstport'].append(tokens[4])
-         rulesList['content'].append(tokens[5])
-         rulesList['msg'].append( tokens[6])
+         rulesList['content'].append(tokens[5].encode("HEX"))
+         rulesList['msg'].append(tokens[6])
    return rulesList
