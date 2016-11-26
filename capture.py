@@ -2,6 +2,7 @@
 
 from scapy.all import *
 from rules import *
+from logger import *
 
 def cap():
    rules = getRules('./rules.file')
@@ -12,7 +13,9 @@ def customPrn(rules):
       pktInfo = processHeader(pkt)
       pktInfo['content'] = str(pkt).encode("HEX")
       pktInfo['msg'] = ''
-      processData(pktInfo, rules)
+      alert = processData(pktInfo, rules)
+      if alert:
+         logNetAlert(pktInfo)
    return processPacket
 
 def processHeader(pkt):
@@ -57,12 +60,12 @@ def processData(pkt, rules):
       for key in rules.keys():
          if pkt[key] == rules[key][i] or rules[key][i] == '*':
             hitCount = hitCount + 1
-         else:
-            if key != 'msg':
-               print pkt[key], rules[key][i]
-      #print 'Hit count is %d for rule %d\n' % (hitCount, i)
+         elif key == 'content':
+            if rules[key][i].encode("HEX") in pkt[key]:
+               hitCount = hitCount + 1
       if hitCount == 6:
-         print rules['msg'][i]
+         pkt['msg'] = rules['msg'][i]
+         return True
 
 def getIdx(refList, qry):
    idx = [i for i, x in enumerate(refList) if x == qry]

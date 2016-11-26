@@ -37,6 +37,11 @@ def checkRules(lines):
          rulesList['srcport'].append(tokens[2])
          rulesList['dstip'].append(tokens[3])
          rulesList['dstport'].append(tokens[4])
-         rulesList['content'].append(tokens[5].encode("HEX"))
-         rulesList['msg'].append(tokens[6])
+         if tokens[5].startswith('"') and tokens[5].endswith('"'):
+            ruleContent = tokens[5][1:-1]
+            rulesList['content'].append(ruleContent)
+         else:
+            rulesList['content'].append(tokens[5])
+         ruleMsg = tokens[6][1:-2]
+         rulesList['msg'].append(ruleMsg)
    return rulesList
