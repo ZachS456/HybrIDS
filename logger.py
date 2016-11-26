@@ -3,13 +3,15 @@
 import time
 import cPickle as pickle
 
-def logNetAlert(pkt, mesg):
+def logNetAlert(pkt, mesg, pid=''):
    logFile = '/var/log/.hyrbids.log'
    fout = open(logFile, 'ab')
 
    curTime = time.time()
 
-   # insert the pid
+   if(pid == ''):
+      pid = ''
+#add pid to log
 
    logLine = '%s: %f %d %s %s %s %s\n' % pkt['msg'], curTime, pid, \
       str(pkt['srcip']), str(pkt['srcport']), str(pkt['dstip']), \
@@ -27,3 +29,11 @@ def printLog():
    logs = pickle.load(fin)
 
    print str(logs)
+
+def logCheck():
+   while True:
+      logFile = '/var/log/.hybrids.log'
+      fin = open(logFile, 'rb')
+      contents = fin.read()
+      
+
