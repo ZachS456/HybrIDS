@@ -15,7 +15,9 @@ def customPrn(rules):
       pktInfo['msg'] = ''
       alert = processData(pktInfo, rules)
       if alert:
-         logNetAlert(pktInfo)
+         exit(0)
+         #print pktInfo['msg']
+         #logNetAlert(pktInfo)
    return processPacket
 
 def processHeader(pkt):

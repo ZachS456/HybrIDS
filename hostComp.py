@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import os
+import sys
+
 def hComp():
    if sys.platform != 'linux2' and sys.platform != 'linux': 
    	print sys.platform  + " is not supported."

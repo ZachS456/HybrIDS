@@ -3,17 +3,16 @@
 import time
 import cPickle as pickle
 
-def logNetAlert(pkt, mesg, pid=''):
+def logNetAlert(pkt, mesg):
    logFile = '/var/log/.hyrbids.log'
    fout = open(logFile, 'ab')
 
    curTime = time.time()
 
-   if(pid == ''):
-	#add pid to log
+   # insert the pid
 
-   logLine = '%s: %f %d %s %s %s %s\n' % pkt['msg'], curTime, pid, 
-      str(pkt['srcip']), str(pkt['srcport']), str(pkt['dstip']),
+   logLine = '%s: %f %d %s %s %s %s\n' % pkt['msg'], curTime, pid, \
+      str(pkt['srcip']), str(pkt['srcport']), str(pkt['dstip']), \
       str(pkt['dstport'])
 
    pickle.dump(logLine, fout)
