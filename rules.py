@@ -8,7 +8,6 @@ def getRules(fileName):
    fin = open(fileName, 'r')
    lines = fin.readlines()
    rulesD = checkRules(lines)
-   print str(rulesD)
    return rulesD
 
 def checkRules(lines):
