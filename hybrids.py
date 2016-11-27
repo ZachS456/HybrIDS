@@ -8,6 +8,7 @@ import hashlib
 import datetime
 import subprocess
 import datetime
+import threading
 #from crontab import CronTab
 from scapy.all import *
 from fsc import *
@@ -22,22 +23,23 @@ print 'Welcome to HybrIDS'
 tasks = raw_input('Start host and network components?[yes/no]\n')
 
 if tasks == 'y' or tasks == 'yes':
-   hidsProc = Process(target=hComp)
-   nidsProc = Process(target=cap)
+   hidsProc = threading.Thread(target=hComp)
+   nidsProc = threading.Thread(target=cap)
    hidsProc.start()
    nidsProc.start()
+
 else:
    tasks = raw_input('Which individual component to start?[network/host/none]\n')
    if tasks == 'host':
-      hidsProc = Process(target=hComp)
+      hidsProc = threading.Thread(target=hComp)
       hidsProc.start()
    elif tasks == 'network':
-      nidsProc = Process(target=cap)
+      nidsProc = threading.Thread(target=cap)
       nidsProc.start()
    else:
       print 'Hybrids not started'
       print 'Exiting...'
       exit(-1)
 
-logProc = Process(target=logCheck)
+logProc = threading.Thread(target=logCheck)
 logProc.start()

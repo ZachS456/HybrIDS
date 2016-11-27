@@ -35,11 +35,11 @@ def logCheck():
    fin = open(logFile, 'rb')
    initRead = fin.read()
    fin.close()
-   sleep(10)
+   time.sleep(10)
    while True:
       fin = open(logFile, 'rb')
       contents = fin.read()
       if initRead != contents:
          print 'Alert: Check log file!'
       fin.close()
-      sleep(10)
+      time.sleep(10)

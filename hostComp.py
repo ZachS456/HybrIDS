@@ -16,9 +16,9 @@ def hComp():
    
    if not os.path.isfile("saver.p"):
    	try:
-   		reply = raw_input('We noticed that you have not run the initial scan\nWould you like run it now?\n')
+   		reply = raw_input('We noticed that you have not run the initial scan. Would you like run it now?\n')
    		if reply == 'y' or reply == 'yes':
-   			fsCheck('/home/Zach')
+   			fsCheck(os.path.expanduser('~'))
    		else:
    			print 'Nothing to be done'
    	except KeyboardInterrupt:
