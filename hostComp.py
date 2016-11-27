@@ -2,7 +2,7 @@
 
 import os
 import sys
-
+from fsc import *
 def hComp():
    if sys.platform != 'linux2' and sys.platform != 'linux': 
    	print sys.platform  + " is not supported."
