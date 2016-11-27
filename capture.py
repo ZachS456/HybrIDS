@@ -3,6 +3,7 @@
 from scapy.all import *
 from rules import *
 from logger import *
+from pidfind import *
 
 def cap():
    rules = getRules('./rules.file')
@@ -15,8 +16,8 @@ def customPrn(rules):
       pktInfo['msg'] = ''
       alert = processData(pktInfo, rules)
       if alert:
-         exit(0)
-         #print pktInfo['msg']
+         #exit(0)
+         print pktInfo['msg']
          #logNetAlert(pktInfo)
    return processPacket
 
@@ -67,6 +68,7 @@ def processData(pkt, rules):
                hitCount = hitCount + 1
       if hitCount == 6:
          pkt['msg'] = rules['msg'][i]
+	 pidfind(pkt)
          return True
 
 def getIdx(refList, qry):
