@@ -26,19 +26,18 @@ if tasks == 'y' or tasks == 'yes':
    nidsProc = Process(target=cap)
    hidsProc.start()
    nidsProc.start()
-   #hidsProc.join()
-   #nidsProc.join()
 else:
    tasks = raw_input('Which individual component to start?')
    if tasks == 'host':
       hidsProc = Process(target=hComp)
       hidsProc.start()
-      #hidsProc.join()
    elif tasks == 'network':
       nidsProc = Process(target=cap)
       nidsProc.start()
-      #nidsProc.join()
    else:
       print 'Hybrids not started'
       print 'Exiting...'
       exit(-1)
+
+logProc = Process(target=logCheck)
+logProc.start()
