@@ -31,9 +31,15 @@ def printLog():
    print str(logs)
 
 def logCheck():
+   logFile = '/var/log/.hybrids.log'
+   fin = open(logFile, 'rb')
+   initRead = fin.read()
+   fin.close()
+   sleep(10)
    while True:
-      logFile = '/var/log/.hybrids.log'
       fin = open(logFile, 'rb')
       contents = fin.read()
-      
-
+      if initRead != contents:
+         print 'Alert: Check log file!'
+      fin.close()
+      sleep(10)
