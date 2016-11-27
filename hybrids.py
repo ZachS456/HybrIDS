@@ -19,7 +19,7 @@ from multiprocessing import Process
 
 print 'Welcome to HybrIDS'
 
-tasks = raw_input('Start host and network components?\n')
+tasks = raw_input('Start host and network components?[yes/no]\n')
 
 if tasks == 'y' or tasks == 'yes':
    hidsProc = Process(target=hComp)
@@ -27,7 +27,7 @@ if tasks == 'y' or tasks == 'yes':
    hidsProc.start()
    nidsProc.start()
 else:
-   tasks = raw_input('Which individual component to start?')
+   tasks = raw_input('Which individual component to start?[network/host/none]\n')
    if tasks == 'host':
       hidsProc = Process(target=hComp)
       hidsProc.start()
