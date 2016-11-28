@@ -23,18 +23,22 @@ print 'Welcome to HybrIDS'
 tasks = raw_input('Start host and network components?[yes/no]\n')
 
 if tasks == 'y' or tasks == 'yes':
-   hidsProc = threading.Thread(target=hComp)
-   nidsProc = threading.Thread(target=cap)
+   #hidsProc = threading.Thread(target=hComp)
+   #nidsProc = threading.Thread(target=cap)
+   hidsProc = Process(target=hComp)
+   nidsProc = Process(target=cap)
    hidsProc.start()
    nidsProc.start()
 
 else:
    tasks = raw_input('Which individual component to start?[network/host/none]\n')
    if tasks == 'host':
-      hidsProc = threading.Thread(target=hComp)
+      #hidsProc = threading.Thread(target=hComp)
+      hidsProc = Process(target=hComp)
       hidsProc.start()
    elif tasks == 'network':
-      nidsProc = threading.Thread(target=cap)
+      #nidsProc = threading.Thread(target=cap)
+      nidsProc = Process(target=cap)
       nidsProc.start()
    else:
       print 'Hybrids not started'
@@ -43,3 +47,19 @@ else:
 
 logProc = threading.Thread(target=logCheck)
 logProc.start()
+
+while True:
+   quit = raw_input('To kill processes, type quit nids/hids/all\n')
+   answer = quit.split()
+   if answer[0] == 'quit':
+      if answer[1] == 'all':
+         hidsProc.terminate()
+         nidsProc.terminate()
+         exit(0)
+      elif answer[1] == 'nids':
+         nidsProc.terminate()
+      elif answer[1] == 'hids':
+         hidsProc.terminate()
+      else:
+         print 'Error: Could not complete request'
+         continue
