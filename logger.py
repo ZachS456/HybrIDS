@@ -18,9 +18,6 @@ def logNetAlert(pkt, pid):
 
    pickle.dump(logLine, fout)
 
-def logFSAlert():
-   print 'FS Alert'
-
 def printLog():
    logFile = '/var/log/.hybrids.log'
    fin = open(logFile, 'rb')
