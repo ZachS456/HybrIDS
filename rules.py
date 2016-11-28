@@ -42,7 +42,13 @@ def checkRules(lines):
          else:
             rulesList['srcip'].append(tokens[1])
          rulesList['srcport'].append(tokens[2])
-         rulesList['dstip'].append(tokens[3])
+         if tokens[3] == 'local':
+            t = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            t.connect(("utsa.edu", 80))
+            ip = t.getsockname()[0]
+            rulesList['dstip'].append(str(ip))
+         else:
+            rulesList['dstip'].append(tokens[3])
          rulesList['dstport'].append(tokens[4])
          if tokens[5].startswith('"') and tokens[5].endswith('"'):
             ruleContent = tokens[5][1:-1]
