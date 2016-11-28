@@ -7,7 +7,7 @@ def pidfind(pkt):
 	#if pkt['srcip'] != '192.168.153.129':
 	#	return
 	s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-	s.connect(("gmail.com",80))
+	s.connect(("utsa.edu",80))
 	ip = s.getsockname()[0]
 	s.close()
 	if(str(ip) != pkt['srcip']):
