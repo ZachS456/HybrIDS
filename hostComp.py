@@ -16,18 +16,14 @@ def hComp(stdin):
    #print 'Welcome to HybrIDS v0.1'
    
    if not os.path.isfile("saver.p"):
-   	try:
-   		reply = raw_input('We noticed that you have not run the initial scan. Would you like run it now?\n')
-   		if reply == 'y' or reply == 'yes':
-   			fsCheck(os.path.expanduser('~'))
-			sysScan(os.path.expanduser('~'))
-   		else:
-   			print "nothing"
-   	except KeyboardInterrupt:
+      try:
+         fsCheck(os.path.expanduser('~'))
+         sysScan(os.path.expanduser('~'))
+      except KeyboardInterrupt:
    		print "Have a nice day."
    		exit(0)
    else:
-        sysScan(os.path.expanduser('~'))
+      sysScan(os.path.expanduser('~'))
  #  else:
  #  	path = os.path.realpath(__file__)
 #   	print "What would you like to do?\n"
