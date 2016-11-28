@@ -1,23 +1,28 @@
 #!/usr/bin/env python
-
+import os
 import time
 import cPickle as pickle
 
 def logNetAlert(pkt, pid):
-   logFile = '/var/log/.hyrbids.log'
-   fout = open(logFile, 'ab')
+   logFile = './logs/net/hybrids.log'
+   if os.path.getsize(logFile) > 0:
+      fout = open(logFile, 'a')
+   else:   
+      fout = open(logFile, 'w+')
 
    curTime = time.time()
+   
 
-   if(pid == ''):
-      pid = ''
-
-   logLine = '%s: %f %s %s %s %s %s\n' % pkt['msg'], curTime, pid, \
+   if pid == '' or pid is None:
+	pid = 'NoPID'
+   logLine = '%s: %f %s %s %s %s %s\n' %(pkt['msg'], curTime, pid, \
       str(pkt['srcip']), str(pkt['srcport']), str(pkt['dstip']), \
-      str(pkt['dstport'])
+      str(pkt['dstport']))
 
-   pickle.dump(logLine, fout)
+   #pickle.dump(logLine, fout)
+   fout.write(logLine)
 
+   fout.close()
 def printLog():
    logFile = '/var/log/.hybrids.log'
    fin = open(logFile, 'rb')
@@ -27,7 +32,7 @@ def printLog():
    print str(logs)
 
 def logCheck():
-   logFile = '/var/log/.hybrids.log'
+   logFile = 'logs/net/hybrids.log'
    fin = open(logFile, 'rb')
    initRead = fin.read()
    fin.close()

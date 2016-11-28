@@ -1,2 +1,2 @@
-#tcp * * * * * "Testing"
-tcp 172.16.1.41 * * * "Secretz" "Secretz exfilld"
+tcp * * * * * "Testing"
+#tcp 172.16.1.41 * * * "Secretz" "Secretz exfilld"

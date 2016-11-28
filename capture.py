@@ -16,7 +16,7 @@ def customPrn(rules):
       pktInfo['msg'] = ''
       alert = processData(pktInfo, rules)
       if alert:
-         print pktInfo['msg']
+         #print pktInfo['msg']
          pidNum = pidfind(pktInfo)
          logNetAlert(pktInfo, pidNum)
    return processPacket

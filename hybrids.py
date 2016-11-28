@@ -16,7 +16,7 @@ from capture import *
 from hostComp import *
 from rules import *
 from logger import *
-from multiprocessing import Process
+from multiprocessing import *
 
 print 'Welcome to HybrIDS'
 
@@ -25,17 +25,19 @@ tasks = raw_input('Start host and network components?[yes/no]\n')
 if tasks == 'y' or tasks == 'yes':
    #hidsProc = threading.Thread(target=hComp)
    #nidsProc = threading.Thread(target=cap)
-   hidsProc = Process(target=hComp)
+   hidsProc = Process(target=hComp, args=(sys.stdin.fileno(), ))
    nidsProc = Process(target=cap)
    hidsProc.start()
    nidsProc.start()
+   
 
 else:
    tasks = raw_input('Which individual component to start?[network/host/none]\n')
    if tasks == 'host':
       #hidsProc = threading.Thread(target=hComp)
-      hidsProc = Process(target=hComp)
+      hidsProc = Process(target=hComp, args=(sys.stdin.fileno(),))
       hidsProc.start()
+      hidsProc.join()
    elif tasks == 'network':
       #nidsProc = threading.Thread(target=cap)
       nidsProc = Process(target=cap)
@@ -50,17 +52,15 @@ logProc = Process(target=logCheck)
 logProc.start()
 
 while True:
-   quit = raw_input('To kill processes, type quit nids/hids/all\n')
-   answer = quit.split()
-   if answer[0] == 'quit':
-      if answer[1] == 'all':
+   quit = raw_input('To kill program type "kill"\n')
+   if quit == 'kill':
+      try:
          hidsProc.terminate()
          nidsProc.terminate()
-         exit(0)
-      elif answer[1] == 'nids':
-         nidsProc.terminate()
-      elif answer[1] == 'hids':
-         hidsProc.terminate()
-      else:
-         print 'Error: Could not complete request'
-         continue
+         logProc.terminate()
+         sys.exit(0)
+      except Exception:
+         sys.exit(0)
+   else:
+      print 'Error: type kill, not %s\n' % (quit)
+      continue
