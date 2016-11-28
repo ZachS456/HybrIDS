@@ -45,7 +45,8 @@ else:
       print 'Exiting...'
       exit(-1)
 
-logProc = threading.Thread(target=logCheck)
+#logProc = threading.Thread(target=logCheck)
+logProc = Process(target=logCheck)
 logProc.start()
 
 while True:
