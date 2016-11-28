@@ -16,9 +16,9 @@ def customPrn(rules):
       pktInfo['msg'] = ''
       alert = processData(pktInfo, rules)
       if alert:
-         #exit(0)
          print pktInfo['msg']
-         #logNetAlert(pktInfo)
+         pidNum = pidfind(pktInfo)
+         logNetAlert(pktInfo, pidNum)
    return processPacket
 
 def processHeader(pkt):
@@ -68,7 +68,7 @@ def processData(pkt, rules):
                hitCount = hitCount + 1
       if hitCount == 6:
          pkt['msg'] = rules['msg'][i]
-	 pidfind(pkt)
+	      #pidfind(pkt)
          return True
 
 def getIdx(refList, qry):
