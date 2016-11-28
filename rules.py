@@ -2,6 +2,7 @@
 
 import sys
 import re
+import socket
 
 def getRules(fileName):
 
@@ -33,7 +34,13 @@ def checkRules(lines):
          exit(-1)
       else:
          rulesList['proto'].append(tokens[0])
-         rulesList['srcip'].append(tokens[1])
+         if tokens[1] == 'local':
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("utsa.edu", 80))
+            ip = s.getsockname()[0]
+            rulesList['srcip'].append(str(ip))
+         else:
+            rulesList['srcip'].append(tokens[1])
          rulesList['srcport'].append(tokens[2])
          rulesList['dstip'].append(tokens[3])
          rulesList['dstport'].append(tokens[4])

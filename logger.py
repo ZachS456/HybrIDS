@@ -33,12 +33,12 @@ def printLog():
 
 def logCheck():
    logFile = 'logs/net/hybrids.log'
-   fin = open(logFile, 'rb')
+   fin = open(logFile, 'r')
    initRead = fin.read()
    fin.close()
    time.sleep(10)
    while True:
-      fin = open(logFile, 'rb')
+      fin = open(logFile, 'r')
       contents = fin.read()
       if initRead != contents:
          print 'Alert: Check log file!'
