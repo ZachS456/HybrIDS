@@ -2,6 +2,7 @@
 import os
 import time
 import cPickle as pickle
+import subprocess
 
 def logNetAlert(pkt, pid):
    logFile = './logs/net/hybrids.log'
@@ -24,7 +25,7 @@ def logNetAlert(pkt, pid):
 
    fout.close()
 def printLog():
-   logFile = '/var/log/.hybrids.log'
+   logFile = 'logs/net/hybrids.log'
    fin = open(logFile, 'rb')
 
    logs = pickle.load(fin)
@@ -33,6 +34,8 @@ def printLog():
 
 def logCheck():
    logFile = 'logs/net/hybrids.log'
+   if not os.path.exists(logFile):
+      subprocess.call(['touch', logFile])
    fin = open(logFile, 'r')
    initRead = fin.read()
    fin.close()
